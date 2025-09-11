@@ -1,0 +1,109 @@
+/* Fondo general */
+body {
+  background: linear-gradient(135deg, #004080, #007bff);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Caja principal */
+.container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  max-width: 450px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Título */
+h1 {
+  color: #004080;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+/* Inputs */
+.form-control {
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0,123,255,0.5);
+}
+
+/* Botón */
+.btn-primary {
+  background-color: #004080;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: bold;
+  width: 100%;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #0066cc;
+}
+
+/* Enlace login */
+p {
+  margin-top: 15px;
+  font-size: 0.95rem;
+}
+
+p a {
+  color: #004080;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+/* Home */
+/* Hero de inicio */
+.container {
+  background: #fff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  max-width: 600px;
+}
+
+/* Texto */
+/* Hero */
+.container-fluid {
+  background: linear-gradient(135deg, #004080, #007bff);
+  color: white;
+  border-radius: 10px;
+}
+
+.container-fluid h1 {
+  font-weight: bold;
+}
+
+.container-fluid .lead {
+  font-size: 1.2rem;
+  color: #f1f1f1;
+}
+
+/* Secciones laterales */
+.col-md-6 {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.col-md-6:hover {
+  transform: translateY(-5px);
+}
+
