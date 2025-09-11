@@ -49,13 +49,16 @@ conexion.connect((error) => {
 app.get('/index', (req, res) => {
     res.render('index'); 
 });
+app.get('/empresa', (req, res) => {
+    res.render('empresa'); 
+});
 app.get('/productos', (req, res) => {
     res.render('productos'); 
 });
-// P
+
 // Página principal → registro
 app.get('/', (req, res) => {
-    res.render('home'); // formulario de registro
+    res.render('home'); 
 });
 
 // Página de login
@@ -75,7 +78,7 @@ app.post('/register', (req, res) => {
 
     conexion.query(
         'INSERT INTO usuarios SET ?',
-        { nombre: nombre, email: email, password: passwordHash }, // usa "correo" (coherente con tu formulario y BD)
+        { nombre: nombre, email: email, password: passwordHash }, 
         (error, results) => {
             if (error) {
                 console.log(error);
