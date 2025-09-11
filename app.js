@@ -46,8 +46,8 @@ conexion.connect((error) => {
 });
 //RUTAS
 
-app.get('/home', (req, res) => {
-    res.render('home'); 
+app.get('/index', (req, res) => {
+    res.render('index'); 
 });
 app.get('/productos', (req, res) => {
     res.render('productos'); 
@@ -55,7 +55,7 @@ app.get('/productos', (req, res) => {
 // P
 // Página principal → registro
 app.get('/', (req, res) => {
-    res.render('index'); // formulario de registro
+    res.render('home'); // formulario de registro
 });
 
 // Página de login
@@ -79,7 +79,7 @@ app.post('/register', (req, res) => {
         (error, results) => {
             if (error) {
                 console.log(error);
-                res.send('❌ Error al registrar el usuario');
+                res.send('Error al registrar el usuario');
             } else {
                 res.redirect('login');
             }
