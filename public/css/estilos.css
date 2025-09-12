@@ -1,11 +1,44 @@
 /* Fondo general */
+/* Fondo general */
 body {
   background: linear-gradient(135deg, #004080, #007bff);
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0; /* importante para que no haya espacio arriba */
+  font-family: Arial, sans-serif;
 }
+/* Navbar */
+.navbar {
+  background: linear-gradient(90deg, #004080, #007bff);
+  padding: 0.8rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  position: fixed; /* se queda fijo */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Marca */
+.navbar-brand {
+  color: #fff !important;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+/* Links */
+.nav-link {
+  color: #f1f1f1 !important;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #ffd700 !important; /* dorado al pasar el mouse */
+}
+.container {
+  margin-top: 100px; /* separa el contenido del nav */
+}
+
 
 /* Caja principal */
 .container {
@@ -107,3 +140,7 @@ p a:hover {
   transform: translateY(-5px);
 }
 
+.logo-izquierda {
+  float: left;
+  border-radius: 7px;
+}

@@ -46,21 +46,24 @@ conexion.connect((error) => {
 });
 //RUTAS
 
-app.get('/home', (req, res) => {
-    res.render('home'); 
+app.get('/index', (req, res) => {
+    res.render('index'); 
+});
+app.get('/empresa', (req, res) => {
+    res.render('empresa'); 
 });
 app.get('/productos', (req, res) => {
     res.render('productos'); 
 });
-// P
-// Página principal → registro
+
+// Página Principal
 app.get('/', (req, res) => {
-    res.render('index'); // formulario de registro
+    res.render('home'); 
 });
 
-// Página de login
+// Ruta del login
 app.get('/login', (req, res) => {
-    res.render('login'); // formulario login
+    res.render('login');
 });
 
 // Procesar registro
@@ -75,11 +78,11 @@ app.post('/register', (req, res) => {
 
     conexion.query(
         'INSERT INTO usuarios SET ?',
-        { nombre: nombre, email: email, password: passwordHash }, // usa "correo" (coherente con tu formulario y BD)
+        { nombre: nombre, email: email, password: passwordHash }, 
         (error, results) => {
             if (error) {
                 console.log(error);
-                res.send('❌ Error al registrar el usuario');
+                res.send('Error al registrar el usuario');
             } else {
                 res.redirect('login');
             }
@@ -87,7 +90,7 @@ app.post('/register', (req, res) => {
     );
 });
 
-/**PROCESAR EL LOGIN */
+/** PROCESAR EL LOGIN */
 app.post('/login', (req, res) => {
     const { correo, contrasenia } = req.body;
 
@@ -114,14 +117,14 @@ app.post('/login', (req, res) => {
 
         // Guardar sesión
         req.session.user = results[0];
-        res.send('Login exitoso, bienvenido ' + results[0].nombre);
+
+        // Redirigir al index
+        return res.redirect('/empresa');  
     });
 });
 
 
-// ======================
-// Servidor
-// ======================
+//SERVERS
 app.listen(3000, () => {
     console.log('Servidor corriendo en http://localhost:3000');
 });
