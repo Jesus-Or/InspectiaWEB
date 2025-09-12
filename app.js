@@ -29,42 +29,31 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-// Conexión a base de datos
-const conexion = mysql.createConnection({
+// Conexión a base de datos con pool
+const conexion = mysql.createPool({
+    connectionLimit: 10,
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE
 });
 
-conexion.connect((error) => {
+// Probar conexión
+conexion.getConnection((error, connection) => {
     if (error) {
         console.log('Error al conectar BD:', error);
-        return;
+    } else {
+        console.log("Conexión exitosa a la BD");
+        connection.release();
     }
-    console.log("Conexión exitosa a la BD");
-});
-//RUTAS
-
-app.get('/index', (req, res) => {
-    res.render('index'); 
-});
-app.get('/empresa', (req, res) => {
-    res.render('empresa'); 
-});
-app.get('/productos', (req, res) => {
-    res.render('productos'); 
 });
 
-// Página Principal
-app.get('/', (req, res) => {
-    res.render('home'); 
-});
-
-// Ruta del login
-app.get('/login', (req, res) => {
-    res.render('login');
-});
+// Rutas
+app.get('/index', (req, res) => res.render('index'));
+app.get('/empresa', (req, res) => res.render('empresa'));
+app.get('/productos', (req, res) => res.render('productos'));
+app.get('/', (req, res) => res.render('home'));
+app.get('/login', (req, res) => res.render('login'));
 
 // Procesar registro
 app.post('/register', (req, res) => {
@@ -78,8 +67,8 @@ app.post('/register', (req, res) => {
 
     conexion.query(
         'INSERT INTO usuarios SET ?',
-        { nombre: nombre, email: email, password: passwordHash }, 
-        (error, results) => {
+        { nombre, email, password: passwordHash },
+        (error) => {
             if (error) {
                 console.log(error);
                 res.send('Error al registrar el usuario');
@@ -90,7 +79,7 @@ app.post('/register', (req, res) => {
     );
 });
 
-/** PROCESAR EL LOGIN */
+// Procesar login
 app.post('/login', (req, res) => {
     const { correo, contrasenia } = req.body;
 
@@ -98,7 +87,6 @@ app.post('/login', (req, res) => {
         return res.send('Debes ingresar correo y contraseña');
     }
 
-    //  va "email" porque así está en tu tabla
     conexion.query('SELECT * FROM usuarios WHERE email = ?', [correo], async (error, results) => {
         if (error) {
             console.log(error);
@@ -115,18 +103,15 @@ app.post('/login', (req, res) => {
             return res.send('Usuario o contraseña incorrectos');
         }
 
-        // Guardar sesión
         req.session.user = results[0];
-
-        // Redirigir al index
-        return res.redirect('/empresa');  
+        return res.redirect('/empresa');
     });
 });
 
-
-//SERVERS
-app.listen(3000, () => {
-    console.log('Servidor corriendo en http://localhost:3000');
+// Servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
 module.exports = conexion;
