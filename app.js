@@ -24,10 +24,25 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Sesiones
 app.use(session({
-    secret: 'Qwerty',
-    resave: true,
-    saveUninitialized: true,
+    secret: 'clave_secreta',
+    resave: false,
+    saveUninitialized: true
 }));
+
+// Middleware para compartir usuario en todas las vistas
+app.use((req, res, next) => {
+    res.locals.user = req.session.user;
+    next();
+});
+
+// 👉 Middleware para proteger rutas
+function isLoggedIn(req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+}
 
 // Conexión a base de datos con pool
 const conexion = mysql.createPool({
@@ -48,12 +63,26 @@ conexion.getConnection((error, connection) => {
     }
 });
 
-// Rutas
-app.get('/index', (req, res) => res.render('index'));
-app.get('/empresa', (req, res) => res.render('empresa'));
-app.get('/productos', (req, res) => res.render('productos'));
+// ==================== RUTAS ==================== //
+
+// Páginas públicas
 app.get('/', (req, res) => res.render('home'));
+app.get('/index', (req, res) => res.render('index'));
+app.get('/productos', (req, res) => res.render('productos'));
 app.get('/login', (req, res) => res.render('login'));
+//app.get('/register', (req, res) => res.render('register')); // ✅ nueva ruta GET
+
+// Ruta protegida
+app.get('/empresa', isLoggedIn, (req, res) => {
+    res.render('empresa', { user: req.session.user });
+});
+
+// Logout
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/login');
+    });
+});
 
 // Procesar registro
 app.post('/register', (req, res) => {
@@ -73,7 +102,7 @@ app.post('/register', (req, res) => {
                 console.log(error);
                 res.send('Error al registrar el usuario');
             } else {
-                res.redirect('login');
+                res.redirect('/login'); // ✅ corregido
             }
         }
     );
